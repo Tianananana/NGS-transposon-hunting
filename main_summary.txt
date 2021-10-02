@@ -1,0 +1,20 @@
+PASS	Basic Statistics	dnaseq_1.fq
+PASS	Per base sequence quality	dnaseq_1.fq
+PASS	Per sequence quality scores	dnaseq_1.fq
+PASS	Per base sequence content	dnaseq_1.fq
+PASS	Per sequence GC content	dnaseq_1.fq
+PASS	Per base N content	dnaseq_1.fq
+PASS	Sequence Length Distribution	dnaseq_1.fq
+PASS	Sequence Duplication Levels	dnaseq_1.fq
+PASS	Overrepresented sequences	dnaseq_1.fq
+PASS	Adapter Content	dnaseq_1.fq
+PASS	Basic Statistics	dnaseq_2.fq
+PASS	Per base sequence quality	dnaseq_2.fq
+PASS	Per sequence quality scores	dnaseq_2.fq
+PASS	Per base sequence content	dnaseq_2.fq
+PASS	Per sequence GC content	dnaseq_2.fq
+PASS	Per base N content	dnaseq_2.fq
+PASS	Sequence Length Distribution	dnaseq_2.fq
+PASS	Sequence Duplication Levels	dnaseq_2.fq
+PASS	Overrepresented sequences	dnaseq_2.fq
+PASS	Adapter Content	dnaseq_2.fq
