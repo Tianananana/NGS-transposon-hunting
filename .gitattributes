@@ -1,2 +1,6 @@
 *.fq filter=lfs diff=lfs merge=lfs -text
 '*.fq' filter=lfs diff=lfs merge=lfs -text
+.sam filter=lfs diff=lfs merge=lfs -text
+.bam filter=lfs diff=lfs merge=lfs -text
+results/2a_initial_alignment_ty5_6/*.bam filter=lfs diff=lfs merge=lfs -text
+results/2a_initial_alignment_ty5_6/*.sam filter=lfs diff=lfs merge=lfs -text
