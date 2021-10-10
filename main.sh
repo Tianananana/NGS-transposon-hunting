@@ -6,12 +6,12 @@ cd $BASE_DIR
 ########################
 # 1. Quality Control ###
 ########################
-fastqc data/*.fq -o fastqc
-for file in fastqc/*.zip;
+fastqc DNAseq/*.fq -o fastqc
+for file in DNAseq/*.zip;
     do
-    unzip $file -d fastqc
+    unzip $file -d DNAseq
     done
-cat fastqc/*/summary.txt > fastqc/main_summary.txt
+cat DNAseq/*/summary.txt > DNAseq/main_summary.txt
 grep "FAIL" fastqc/main_summary.txt 
 # check that theres no FAILS in fastqc.
 # adaptor content passed. Trimming not needed.
@@ -29,9 +29,9 @@ ty5_6p=genome/ty5_6p_genome/ty5_6p.fa
 export BOWTIE2_INDEXES=${BASE_DIR}/genome/ty5_6p_genome/ty5_6p.fa
 bowtie2-build $ty5_6p genome/ty5_6p_genome/ty5_6p
 
-sam1=results/align1/align1.sam
-bam1=results/align1/align1.bam
-sorted_bam1=results/align1/align1-sorted.bam
+sam1=results/2a_initial_alignment_ty5_6/align.sam
+bam1=results/2a_initial_alignment_ty5_6/align.bam
+sorted_bam1=results/2a_initial_alignment_ty5_6/align-sorted.bam
 
 bowtie2 -x ty5_6p --very-fast -p 4 -1 ${fq1} -2 ${fq2} -S ${sam1}
 samtools view -S -b ${sam1} > ${bam1}
@@ -42,10 +42,10 @@ samtools index ${sorted_bam1}
 # 2b. Filter Reads with Unmapped Mates ###
 ##########################################
 filterbyname=bbmap/filterbyname.sh # BBMap (v38.90)
-filtered_sam=results/filtered/filtered_sam.sam
-filtered_names=results/filtered/filtered_names.txt
-filtered_1=results/filtered/filtered_1.fq
-filtered_2=results/filtered/filtered_2.fq
+filtered_sam=results/2b_filter_reads_with_unmapped_mates/filtered_sam.sam
+filtered_names=results/2b_filter_reads_with_unmapped_mates/filtered_names.txt
+filtered_1=results/2b_filter_reads_with_unmapped_mates/filtered_1.fq
+filtered_2=results/2b_filter_reads_with_unmapped_mates/filtered_2.fq
 
 ## extracting QNAME from FLAG tags with mate unmapped
 awk '$2==73 || $2==89 || $2==137 || $2==153' ${sam1} > ${filtered_sam}
@@ -64,9 +64,9 @@ sacCer3=genome/sacCer3_genome/sacCer3.fa
 export BOWTIE2_INDEXES=${BASE_DIR}/genome/sacCer3_genome/sacCer3.fa
 bowtie2-build $sacCer3 genome/sacCer3_genome/sacCer3
 
-sam2=results/align2/align2.sam
-bam2=results/align2/align2.bam
-sorted_bam2=results/align2/align2-sorted.bam
+sam2=results/2c_final_alignment_SacCer3/align2.sam
+bam2=results/2c_final_alignment_SacCer3/align2.bam
+sorted_bam2=results/2c_final_alignment_SacCer3/align2-sorted.bam
 
 bowtie2 -x sacCer3 --very-fast -p 4 -1 ${filtered_1} -2 ${filtered_2} -S ${sam2}
 samtools view -S -b ${sam2} > ${bam2}
@@ -74,13 +74,13 @@ samtools sort -o ${sorted_bam2} ${bam2}
 samtools index ${sorted_bam2}
 
 ########################
-### 3. Visualisation ###
+### 3. Visualization ###
 ########################
 ## Visualisation on Ty5_6p transposon:
 
 ## Extract subset of reads with unmapped mates
-unmapped_bam=results/align1/unmapped.bam
-unmapped_bam-sorted=results/align1/unmapped-sorted.bam
+unmapped_bam=results/3_visualization/unmapped.bam
+unmapped_bam-sorted=results/3_visualization/unmapped-sorted.bam
 
 samtools view -f 9 -b ${sam1} > ${unmapped_bam}
 samtools sort ${unmapped_bam} > ${unmapped_bam-sorted}
@@ -107,4 +107,4 @@ for chr in 'chrIII' 'chrIV' 'chrVII' 'chrIX';
 ## Visualisation on SacCer3 Genome:
 
 ## filtering out the genes from annotations of SacCer
-grep gene saccharomyces_cerevisiae.gff > saccharomyces_cerevisiae_gene.gff
+grep gene genome/saccharomyces_cerevisiae.gff > genome/saccharomyces_cerevisiae_gene.gff
